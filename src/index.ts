@@ -1,19 +1,15 @@
-import { Application, Sprite } from 'pixi.js'
+import { Application } from "pixi.js";
+import { ShipScene } from "./shipScene";
 
 const app = new Application({
-	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
-	resolution: window.devicePixelRatio || 1,
-	autoDensity: true,
-	backgroundColor: 0x6495ed,
-	width: 640,
-	height: 480
+  view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
+  resolution: window.devicePixelRatio || 1,
+  autoDensity: true,
+  backgroundColor: 0x151f32,
+  width: 1000,
+  height: 1000,
 });
+// pass in the screen size to avoid "asking up"
+const sceene: any = new (ShipScene(app) as any)();
 
-const clampy: Sprite = Sprite.from("clampy.png");
-
-clampy.anchor.set(0.5);
-
-clampy.x = app.screen.width / 2;
-clampy.y = app.screen.height / 2;
-
-app.stage.addChild(clampy);
+app.stage.addChild(sceene);
