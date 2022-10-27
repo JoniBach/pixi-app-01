@@ -8,10 +8,10 @@
     
         // Rules for your code
         "strict": true,
-        "noImplicitAny": true,
+        // "noImplicitAny": true,
         "noImplicitReturns": true,
         "noUnusedParameters": true,
-        "noUnusedLocals": true,
+        // "noUnusedLocals": true,
         "noFallthroughCasesInSwitch": true,
         "noImplicitOverride": true,
 
