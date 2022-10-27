@@ -14,10 +14,10 @@ export const SoldierScene = (app: any) => {
   // FederatedPointerEvent
   const anchor = AnimatedSprite.from('soldier.png')
 
-  soldier.pivot.set(25, 35);
-  guns.pivot.set(25, 35);
-  bullets.pivot.set(25, 35);
-  anchor.pivot.set(25, 35);
+  soldier.pivot.set(25, 25);
+  guns.pivot.set(25, 25);
+  bullets.pivot.set(25, 25);
+  anchor.pivot.set(25, 25);
 
 
   const activeKeys: any = [];
