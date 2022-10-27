@@ -18,9 +18,8 @@ const hasAction = (action: any) =>  activeKeys.find((element: any) => {
           // const mouse = app.renderer.plugin.interaction.mouse;
     const dx = mouse.x - target.position.x;
     const dy = mouse.y - target.position.y;
-    const rtat = Math.atan2( dy, dx);
     // const angle = Math.atan2(e.pageX - boxCenter.x, - (e.pageY - boxCenter.y) )*(180 / Math.PI);      
-    let angle = Math.atan2(mouse.x - target.position.x, - (mouse.y - target.position.y) );      
+    const angle = Math.atan2(mouse.x - target.position.x, - (mouse.y - target.position.y) );      
     target.rotation = angle
     // console.log(rtat)
     // console.log(mouse, rtat, dy, dx, target)
@@ -44,6 +43,10 @@ const hasAction = (action: any) =>  activeKeys.find((element: any) => {
       target.position.y += incrament;
       // target.rotation = Math.PI * 2 * 0.50
     }
+    // if (hasAction("fire")) {
+    //   console.log('fire ')
+    //   // target.rotation = Math.PI * 2 * 0.50
+    // }
   }
   app.ticker.add(() => {
    update()

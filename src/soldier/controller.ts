@@ -5,7 +5,6 @@ export const userInputHandler = (arr: any, links?: any, mouse?: any) => {
     }
   };
   const handleKeyDown = (e: any) => {
-    // console.log(e.repeats)
     if (e.repeat === false) {
       if (!arr.includes(e.keyCode)) {
           if (handleLink(e.keyCode)) {
@@ -26,7 +25,6 @@ export const userInputHandler = (arr: any, links?: any, mouse?: any) => {
       }
     }
   };
-  console.log(mouse);
   const handleMouseMove = (e: any) => {
     Object.assign(mouse, { x: e.x, y: e.y });
   };

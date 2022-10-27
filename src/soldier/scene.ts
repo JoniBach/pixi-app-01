@@ -4,6 +4,7 @@ import { Bullets } from "./bullets";
 import { userInputHandler } from "./controller";
 import { Gun } from "./gun";
 import { actionHandler } from "./movementHandler";
+import { projectileHandler } from "./projectileHandler";
 import { Soldier } from "./soldier";
 
 export const SoldierScene = (app: any) => {
@@ -62,8 +63,8 @@ const mouse: any = {};
   });
   userInputHandler(activeKeys, keyNames, mouse)
   actionHandler({target: anchor, activeKeys, app, mouse })
-  Bullets({ sprite: bullets,  app, target: anchor });
+  projectileHandler({target: anchor, activeKeys, app, mouse })
   Gun({ sprite: guns,  app, target: anchor });
   Anchor({ sprite: anchor, app, });
-  Soldier({ sprite: soldier,  app, target: anchor });
+  // Bullets({ sprite: bullets,  app, target: anchor , mouse});
 };
