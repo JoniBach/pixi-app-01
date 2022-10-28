@@ -3,6 +3,7 @@ import { Anchor } from "./anchor";
 import { Bullets } from "./bullets";
 import { userInputHandler } from "./controller";
 import { Gun } from "./gun";
+import { Monster } from "./monster";
 import { actionHandler } from "./movementHandler";
 import { projectileHandler } from "./projectileHandler";
 import { Soldier } from "./soldier";
@@ -19,6 +20,7 @@ export const SoldierScene = (app: any) => {
   guns.pivot.set(25, 25);
   bullets.pivot.set(25, 25);
   anchor.pivot.set(25, 25);
+
 
 
   const activeKeys: any = [];
@@ -47,24 +49,16 @@ const mouse: any = {};
     return name.keyName;
   };
 
-  const handleInput = (e: any) => {
-    console.log(e.keyCode);
-    console.log(getName(e.keyCode));
-  };
 
-  const update = () => {
-    anchor.position.x += 1;
-  };
 
   // requestAnimationFrame(update);
    
-  app.ticker.add(() => {
-    // console.log(activeKeys);
-  });
+
   userInputHandler(activeKeys, keyNames, mouse)
   actionHandler({target: anchor, activeKeys, app, mouse })
   projectileHandler({target: anchor, activeKeys, app, mouse })
   Gun({ sprite: guns,  app, target: anchor });
+  // Monster({  app, target: anchor });
   Anchor({ sprite: anchor, app, });
   // Bullets({ sprite: bullets,  app, target: anchor , mouse});
 };

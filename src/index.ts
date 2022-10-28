@@ -6,8 +6,8 @@ const app = new Application({
   resolution: window.devicePixelRatio || 1,
   autoDensity: true,
   backgroundColor: 0x151f32,
-  width: 1000,
-  height: 1000,
+  width: screen.width,
+  height: screen.height,
 });
 // pass in the screen size to avoid "asking up"
 // const sceene: any = new (ShipScene(app) as any)();

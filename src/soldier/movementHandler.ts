@@ -1,5 +1,5 @@
 export const actionHandler = ({target, activeKeys, app, mouse}: any) => {
-const incrament = 1
+const incrament = 2
 
 
 const hasAction = (action: any) =>  activeKeys.find((element: any) => {
