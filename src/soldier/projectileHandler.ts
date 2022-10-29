@@ -4,8 +4,6 @@ import PIXI, { Sprite, Text, Ticker } from "pixi.js";
 import { Bullets } from "./bullets";
 
 export const projectileHandler = ({ target, app }: any) => {
-  // console.log({ target, activeKeys, app, mouse });
-
   function getRandomInt(max: number) {
     return Math.floor(Math.random() * max);
   }
@@ -34,66 +32,47 @@ export const projectileHandler = ({ target, app }: any) => {
 
   var bullets: any = [];
   var monsters: any = [];
+  var monsters2: any = [];
   var bulletSpeed = 5;
   var safeZone = 5;
   var killCount = 0;
   var messages: any = [];
+  var health = 8;
 
-  //   const handleTermination = (bullet: any, ticker: any) => {
-  //     const impact = boxesIntersect(bullet, monster);
-  //    if (
-  //      impact ||
-  //      bullet.position.x >= window.innerWidth - 20 ||
-  //      bullet.position.x <= 0 + 20 ||
-  //      bullet.position.y >= window.innerHeight - 20 ||
-  //      bullet.position.y <= 0 + 20
-  //    ) {
-  //      console.log("gone");
-  //      //     bullet.destroy({children: true, texture: true, baseTexture: false})
-  //      // console.log(bullets)
-  //      // bullets = []
-  //      const index = bullets.indexOf(bullet);
-  //      if (index > -1) {
-  //        // only splice bullets when item is found
-  //        bullets.splice(index, 1); // 2nd parameter means remove one item only
-  //      }
-  //          app.stage.removeChild(bullet);
+  // app.ticker.add(() => {
+  //   console.log(monsters2)
+  // })
 
-  //      // ticker.stop()
-
-  //    }
-  //  };
-  //   const ticker = Ticker.shared;
-  //   ticker.autoStart = false;
-  //   ticker.add(() => handleTermination(bullet, ticker));
-  //   ticker.start();
 
   app.ticker.add(() => {
-    if (bullets.length) {
-      bullets.forEach((bullet) => {
-        monsters.forEach((monster) => {
-          const impact = boxesIntersect(bullet, monster);
+    monsters2.forEach((monsterObj) => {
+      // monsterObj.monster.position.x += getRandomInt(2)
+      // monsterObj.monster.position.y += getRandomInt(2)
 
-          if (
-            impact ||
-            bullet.position.x >= window.innerWidth - safeZone ||
-            bullet.position.x <= 0 + safeZone ||
-            bullet.position.y >= window.innerHeight - safeZone ||
-            bullet.position.y <= 0 + safeZone
-          ) {
-            app.stage.removeChild(bullet);
-            const index = bullets.indexOf(bullet);
-            if (index > -1) {
-              // only splice bullets when item is found
-              bullets.splice(index, 1); // 2nd parameter means remove one item only
-            }
+      bullets.forEach((bullet) => {
+        const impact = boxesIntersect(bullet, monsterObj.monster);
+        if (
+          impact ||
+          bullet.position.x >= window.innerWidth - safeZone ||
+          bullet.position.x <= 0 + safeZone ||
+          bullet.position.y >= window.innerHeight - safeZone ||
+          bullet.position.y <= 0 + safeZone
+        ) {
+          app.stage.removeChild(bullet);
+          const index = bullets.indexOf(bullet);
+          if (index > -1) {
+            // only splice bullets when item is found
+            bullets.splice(index, 1); // 2nd parameter means remove one item only
           }
-          if (impact) {
-            app.stage.removeChild(monster);
-            const index = monsters.indexOf(monster);
+        }
+        if (impact) {
+          if (monsterObj.health === 1) {
+            app.stage.removeChild(monsterObj.monster);
+
+            const index = monsters2.indexOf(monsterObj);
             if (index > -1) {
               // only splice monsters when item is found
-              monsters.splice(index, 1); // 2nd parameter means remove one item only
+              monsters2.splice(index, 1); // 2nd parameter means remove one item only
             }
             killCount += 1;
 
@@ -104,17 +83,52 @@ export const projectileHandler = ({ target, app }: any) => {
               align: "center",
             });
             text.position = { x: 20, y: 20 };
-
             app.stage.removeChild(messages[0]);
             messages.splice(0, 1);
             messages.push(text);
-
             app.stage.addChild(text);
+
             spawn();
+          } else {
+            const index = monsters2.indexOf(monsterObj);
+            if (index > -1) {
+              // only splice monsters when item is found
+              monsters2[index].health -= 1;
+              const color = () => {
+                if (monsters2[index].health > 4) {
+                  return 0x00ff00;
+                }
+                if (monsters2[index].health > 2) {
+                  return 0xffa500;
+                }
+                if (monsters2[index].health > 0) {
+                  return 0xff1010;
+                }
+              };
+              const text = new Text(
+                `${Array(monsters2[index].health)
+                  .fill("[]")
+                  .map((e) => e)}`,
+                {
+                  fontFamily: "Arial",
+                  fontSize: 10,
+                  fill: color(),
+                  align: "center",
+                }
+              );
+              text.position = {
+                x: monsterObj.monster.position.x,
+                y: monsterObj.monster.position.y + 30,
+              };
+              app.stage.removeChild(messages[0]);
+              messages.splice(0, 1);
+              messages.push(text);
+              app.stage.addChild(text);
+            }
           }
-        });
+        }
       });
-    }
+    });
   });
 
   function shoot(rotation: any, startPosition: any) {
@@ -129,15 +143,12 @@ export const projectileHandler = ({ target, app }: any) => {
 
   function spawn(rotation: any, startPosition: any) {
     const monster = Sprite.from("eye_monster.png");
-
+    var defaultMonster = { monster, health };
     monster.pivot.set(25, 25);
-
     monster.position.x = getRandomInt(window.innerWidth);
     monster.position.y = getRandomInt(window.innerHeight);
-
     app.stage.addChild(monster);
-
-    monsters.push(monster);
+    monsters2.push(defaultMonster);
   }
 
   // start animating
@@ -148,8 +159,6 @@ export const projectileHandler = ({ target, app }: any) => {
       bullets[b].position.x += Math.cos(bullets[b].rotation) * bulletSpeed;
       bullets[b].position.y += Math.sin(bullets[b].rotation) * bulletSpeed;
     }
-    // render the container
-    // renderer.render(app);
   }
   spawn();
   animate();
