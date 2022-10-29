@@ -20,7 +20,7 @@ export const projectileHandler = ({ target, app }: any) => {
   };
 
   const handleLaunch = (e: any) => {
-    if (e.keyCode === 32) {
+    if (e.keyCode === 32 && activeWeapon) {
       shoot(target.rotation, {
         x: target.position.x + Math.cos(target.rotation) * 20,
         y: target.position.y + Math.sin(target.rotation) * 20,
@@ -31,6 +31,7 @@ export const projectileHandler = ({ target, app }: any) => {
   window.addEventListener("keydown", (e) => handleLaunch(e));
 
   var bullets: any = [];
+  var weapons: any = [];
   var monsters: any = [];
   var monsters2: any = [];
   var bulletSpeed = 5;
@@ -38,17 +39,28 @@ export const projectileHandler = ({ target, app }: any) => {
   var killCount = 0;
   var messages: any = [];
   var health = 8;
+  var activeWeapon = null;
 
   // app.ticker.add(() => {
   //   console.log(monsters2)
   // })
 
-
   app.ticker.add(() => {
+    if (activeWeapon) {
+      activeWeapon.weapon.position = target.position
+      activeWeapon.weapon.rotation = target.rotation
+  app.stage.addChild(activeWeapon.weapon);
+
+    }
+    weapons.forEach((weaponObj) => {
+      const pickUp = boxesIntersect(weaponObj.weapon, target);
+      if (pickUp) {
+        activeWeapon = weaponObj;
+      }
+    });
     monsters2.forEach((monsterObj) => {
       // monsterObj.monster.position.x += getRandomInt(2)
       // monsterObj.monster.position.y += getRandomInt(2)
-
       bullets.forEach((bullet) => {
         const impact = boxesIntersect(bullet, monsterObj.monster);
         if (
@@ -151,6 +163,16 @@ export const projectileHandler = ({ target, app }: any) => {
     monsters2.push(defaultMonster);
   }
 
+  function spawnWeapon() {
+    const weapon = Sprite.from("guns.png");
+    var defaultWeapon = { weapon };
+    weapon.pivot.set(25, 25);
+    weapon.position.x = getRandomInt(window.innerWidth);
+    weapon.position.y = getRandomInt(window.innerHeight);
+    app.stage.addChild(weapon);
+    weapons.push(defaultWeapon);
+  }
+
   // start animating
   function animate() {
     requestAnimationFrame(animate);
@@ -160,6 +182,7 @@ export const projectileHandler = ({ target, app }: any) => {
       bullets[b].position.y += Math.sin(bullets[b].rotation) * bulletSpeed;
     }
   }
+  spawnWeapon();
   spawn();
   animate();
 };

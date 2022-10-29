@@ -1,33 +1,17 @@
 import { AnimatedSprite, Graphics, Sprite } from "pixi.js";
 import { Anchor } from "./anchor";
-import { Bullets } from "./bullets";
 import { userInputHandler } from "./controller";
 import { Gun } from "./gun";
-import { Monster } from "./monster";
 import { actionHandler } from "./movementHandler";
 import { projectileHandler } from "./projectileHandler";
-import { Soldier } from "./soldier";
 
 export const SoldierScene = (app: any) => {
-  const soldier = Sprite.from("soldier.png");
-  const guns = Sprite.from("guns.png");
-  const bullets = Sprite.from("bullets.png");
-  // const anchor = new Graphics()
-  // FederatedPointerEvent
-  const anchor = AnimatedSprite.from('soldier.png')
 
-  soldier.pivot.set(25, 25);
-  guns.pivot.set(25, 25);
-  bullets.pivot.set(25, 25);
+  const anchor = AnimatedSprite.from("soldier.png");
   anchor.pivot.set(25, 25);
 
-
-
   const activeKeys: any = [];
-const mouse: any = {};
-  // anchor.beginFill(0xffffff);
-  // anchor.drawCircle(25, 25, 25);
-  // anchor.endFill();
+  const mouse: any = {};
 
   const keyNames = [
     { keyCode: 87, action: "up", keyName: "up" },
@@ -44,21 +28,8 @@ const mouse: any = {};
     { keyCode: 13, action: "fire", keyName: "enter" },
   ];
 
-  const getName = (keyCode: number) => {
-    const name = keyNames.filter((key) => keyCode === key.keyCode)[0];
-    return name.keyName;
-  };
-
-
-
-  // requestAnimationFrame(update);
-   
-
-  userInputHandler(activeKeys, keyNames, mouse)
-  actionHandler({target: anchor, activeKeys, app, mouse })
-  projectileHandler({target: anchor, activeKeys, app, mouse })
-  Gun({ sprite: guns,  app, target: anchor });
-  // Monster({  app, target: anchor });
-  Anchor({ sprite: anchor, app, });
-  // Bullets({ sprite: bullets,  app, target: anchor , mouse});
+  userInputHandler(activeKeys, keyNames, mouse);
+  actionHandler({ target: anchor, activeKeys, app, mouse });
+  projectileHandler({ target: anchor, activeKeys, app, mouse });
+  Anchor({ sprite: anchor, app });
 };
